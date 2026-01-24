@@ -851,5 +851,76 @@ selElemento.addEventListener("change", atualizarElemento);
 atualizarElemento();
 </script>
 
+<script>
+/* ================= LOCAL STORAGE ================= */
+const STORAGE_KEY = "fichaRPG_COMPLETA";
+
+/* ===== SALVAR ===== */
+function salvarFicha(){
+  const dados = {
+    textos: {},
+    selects: {},
+    imagem: imgPersonagem.src,
+    habilidades,
+    rituais
+  };
+
+  document.querySelectorAll("[contenteditable][id]").forEach(el=>{
+    dados.textos[el.id] = el.innerHTML;
+  });
+
+  document.querySelectorAll("select").forEach(sel=>{
+    dados.selects[sel.id] = sel.value;
+  });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+}
+
+/* ===== CARREGAR ===== */
+function carregarFicha(){
+  const dados = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if(!dados) return;
+
+  for(const id in dados.textos){
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = dados.textos[id];
+  }
+
+  for(const id in dados.selects){
+    const sel = document.getElementById(id);
+    if(sel){
+      sel.value = dados.selects[id];
+      sel.dispatchEvent(new Event("change"));
+    }
+  }
+
+  if(dados.imagem) imgPersonagem.src = dados.imagem;
+
+  if(dados.habilidades){
+    habilidades = dados.habilidades;
+    renderHabilidades();
+  }
+
+  if(dados.rituais){
+    rituais = dados.rituais;
+    renderRituais();
+  }
+
+  atualizarDefesa();
+  atualizarElemento();
+}
+
+/* ===== EVENTOS AUTOMÁTICOS ===== */
+document.addEventListener("input", e=>{
+  if(e.target.matches("[contenteditable], input, textarea, select"))
+    salvarFicha();
+});
+
+document.addEventListener("change", salvarFicha);
+
+/* ===== INICIAR ===== */
+window.addEventListener("load", carregarFicha);
+</script>
+
 </body>
 </html>
