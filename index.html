@@ -599,8 +599,8 @@ function renderHabilidades(){
       <div class="hab-body">
         <p>${h.desc}</p>
         <div class="mestre-tools">
-          <button onclick="editarHab(${i})">Editar</button>
-          <button onclick="removerHab(${i})">Remover</button>
+         <button onclick="editarHab('${h.nome}')">Editar</button>
+<button onclick="removerHab('${h.nome}')">Remover</button>
         </div>
       </div>
     `;
@@ -635,19 +635,27 @@ function adicionarHabilidade(){
   renderHabilidades();
 }
 
-function removerHab(i){
+function removerHab(nome){
   if(confirm("Remover habilidade?")){
-    habilidades.splice(i,1);
+    habilidades = habilidades.filter(h => h.nome !== nome);
     renderHabilidades();
+    salvarFicha();
   }
 }
 
-function editarHab(i){
-  const h=habilidades[i];
-  const n=prompt("Nome:",h.nome);
-  const d=prompt("Descrição:",h.desc);
-  if(n!==null){h.nome=n;h.desc=d;}
-  renderHabilidades();
+function editarHab(nome){
+  const h = habilidades.find(h => h.nome === nome);
+  if(!h) return;
+
+  const n = prompt("Nome:", h.nome);
+  const d = prompt("Descrição:", h.desc);
+
+  if(n !== null){
+    h.nome = n;
+    h.desc = d;
+    renderHabilidades();
+    salvarFicha();
+  }
 }
 
 /* ===== EVENTOS ===== */
@@ -852,7 +860,7 @@ atualizarElemento();
 </script>
 
 <script>
-/* ================= LOCAL STORAGE ================= */
+/* ================= LOCAL STORAGE AVANÇADO ================= */
 const STORAGE_KEY = "fichaRPG_COMPLETA";
 
 /* ===== SALVAR ===== */
@@ -862,16 +870,29 @@ function salvarFicha(){
     selects: {},
     imagem: imgPersonagem.src,
     habilidades,
-    rituais
+    rituais,
+    abaAtiva: document.querySelector("section.ativa")?.id || "aba-ficha",
+    habilidadesAbertas: []
   };
 
+  /* textos editáveis */
   document.querySelectorAll("[contenteditable][id]").forEach(el=>{
     dados.textos[el.id] = el.innerHTML;
   });
 
+  /* selects */
   document.querySelectorAll("select").forEach(sel=>{
     dados.selects[sel.id] = sel.value;
   });
+
+  /* habilidades abertas */
+ document.querySelectorAll(".habilidade").forEach(hab=>{
+  const body = hab.querySelector(".hab-body");
+  const nome = hab.querySelector(".hab-nome")?.innerText;
+  if(body && body.style.display === "block" && nome){
+    dados.habilidadesAbertas.push(nome);
+  }
+});
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
 }
@@ -881,11 +902,13 @@ function carregarFicha(){
   const dados = JSON.parse(localStorage.getItem(STORAGE_KEY));
   if(!dados) return;
 
+  /* textos */
   for(const id in dados.textos){
     const el = document.getElementById(id);
     if(el) el.innerHTML = dados.textos[id];
   }
 
+  /* selects */
   for(const id in dados.selects){
     const sel = document.getElementById(id);
     if(sel){
@@ -894,23 +917,47 @@ function carregarFicha(){
     }
   }
 
+  /* imagem */
   if(dados.imagem) imgPersonagem.src = dados.imagem;
 
+  /* habilidades */
   if(dados.habilidades){
     habilidades = dados.habilidades;
     renderHabilidades();
   }
 
+  /* rituais */
   if(dados.rituais){
     rituais = dados.rituais;
     renderRituais();
   }
 
+  /* aba ativa */
+  setTimeout(()=>{
+    const aba = document.getElementById(dados.abaAtiva);
+    const btn = [...document.querySelectorAll(".menu-abas button")]
+      .find(b => b.getAttribute("onclick")?.includes(dados.abaAtiva));
+    if(aba && btn) abrirAba(dados.abaAtiva, btn);
+  }, 50);
+
+  /* reabrir habilidades */
+setTimeout(()=>{
+  dados.habilidadesAbertas?.forEach(nome=>{
+    document.querySelectorAll(".habilidade").forEach(hab=>{
+      const n = hab.querySelector(".hab-nome")?.innerText;
+      if(n === nome){
+        const body = hab.querySelector(".hab-body");
+        if(body) body.style.display = "block";
+      }
+    });
+  });
+}, 100);
+
   atualizarDefesa();
   atualizarElemento();
 }
 
-/* ===== EVENTOS AUTOMÁTICOS ===== */
+/* ===== EVENTOS ===== */
 document.addEventListener("input", e=>{
   if(e.target.matches("[contenteditable], input, textarea, select"))
     salvarFicha();
