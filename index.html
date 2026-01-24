@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Ficha Digital RPG</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== BASE ORIGINAL ===== */
+body{
+  background:#0e0b07;
+  color:#e6d8a3;
+  font-family:"Cinzel",serif;
+  padding:20px;
+}
+
+.ficha{
+  max-width:1100px;
+  margin:auto;
+  background:#1a140c;
+  padding:20px;
+  border-radius:12px;
+  border:2px solid #6b4f1d;
+}
+
+/* ===== MENU DE ABAS ===== */
+.menu-abas{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.menu-abas button{
+  background:#2a1f12;
+  color:#e6d8a3;
+  border:2px solid #6b4f1d;
+  padding:6px 14px;
+  border-radius:8px;
+  font-family:"Cinzel",serif;
+  cursor:pointer;
+}
+
+.menu-abas button.ativo{
+  background:#3a2b14;
+  border-color:#ffd700;
+  color:#ffd700;
+}
+/* ===== PERÍCIAS ===== */
+.titulo-pericias{
+  text-align:center;
+  color:#ffd700;
+  letter-spacing:2px;
+  margin-bottom:15px;
+
+}
+
+.pericias-box{
+  max-width:900px;
+  background:rgba(0,0,0,0.35);
+  border:1px solid #6b4f1d;
+  border-radius:10px;
+  padding:12px;
+}
+
+.pericia-linha{
+  display:grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+  gap:10px;
+  padding:6px 8px;
+  align-items:center;
+  border-bottom:1px solid #2a1f12;
+}
+
+.pericia-linha:last-child{
+  border-bottom:none;
+}
+
+.pericia-linha .nome{
+  color:#e6d8a3;
+}
+
+.pericia-linha span{
+  text-align:center;
+}
+
+.pericia-linha span[contenteditable]{
+  background:#2a1f12;
+  border-radius:4px;
+  padding:2px 4px;
+}
+
+.pericia-linha .total{
+  color:#00bfff;
+  font-weight:bold;
+}
+
+.cabecalho{
+  font-weight:bold;
+  color:#aaa;
+  border-bottom:2px solid #6b4f1d;
+}
+
+/* ===== TOPO ===== */
+.topo{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.topo img{
+  width:180px;
+  height:240px;
+  object-fit:cover;
+  border-radius:10px;
+  border:2px solid #6b4f1d;
+}
+
+.info span, td[contenteditable]{
+  background:#2a1f12;
+  padding:4px 6px;
+  border-radius:4px;
+}
+
+button{
+  background:#3a2b14;
+  color:#e6d8a3;
+  border:1px solid #8b6a2e;
+  padding:5px 8px;
+  border-radius:6px;
+}
+button:hover{background:#5a421c}
+
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #6b4f1d;padding:6px}
+th{background:#2a1f12}
+
+.barra{
+  width:100%;
+  height:18px;
+  background:#333;
+  border-radius:10px;
+  overflow:hidden;
+}
+.barra div{height:100%;transition:.3s}
+.hp{background:#c0392b}
+.mp{background:#2980b9}
+
+section{display:none}
+section.ativa{display:block}
+</style>
+</head>
+
+<body>
+
+<div class="ficha">
+
+<div class="menu-abas">
+  <button class="ativo" onclick="abrirAba('aba-ficha',this)">Ficha</button>
+  <button onclick="abrirAba('aba-habilidades',this)">Habilidades</button>
+  <button onclick="abrirAba('aba-rituais',this)">Rituais</button>
+  <button onclick="abrirAba('aba-grafico',this)">Perícias</button>
+</div>
+
+<!-- ================= ABA FICHA ================= -->
+<section id="aba-ficha" class="ativa">
+
+<h1 style="text-align:center">📜 Ficha de RPG</h1>
+
+<div class="topo">
+  <img id="imgPersonagem" src="https://via.placeholder.com/180x240">
+
+  <div class="info">
+    <p><b>Nome:</b> <span contenteditable id="nome">Herói</span></p>
+    <p><b>Nível:</b> <span contenteditable id="nivel">1</span></p>
+    <p><b>Raça:</b> <span contenteditable id="raca">Humano</span></p>
+    <p><b>Classe:</b> <span contenteditable id="classe">Guardião</span></p>
+
+    <p><b>Elemento:</b>
+      <select id="elemento"></select>
+    </p>
+
+    <p><b>Relação Elemental:</b>
+      <span id="infoElemento" style="color:#ffd700">—</span>
+    </p>
+<p><b>Armadura:</b>
+  <select id="armadura">
+    <option value="nenhuma">Sem armadura</option>
+    <option value="leve">Armadura Leve</option>
+    <option value="media">Armadura Média</option>
+    <option value="pesada">Armadura Pesada</option>
+  </select>
+</p>
+ 
+    <button onclick="definirImagem()">Adicionar imagem</button>
+    <button onclick="removerImagem()">Remover imagem</button>
+  </div>
+</div>
+
+<h2>Status de Combate</h2>
+
+<table>
+<tr><th>Status</th><th>Atual</th><th>Máx</th><th>Ações</th></tr>
+
+<tr>
+<td>Vida (HP)</td>
+<td contenteditable id="hpAtual">40</td>
+<td contenteditable id="hpMax">50</td>
+<td>
+<button onclick="alterarHP(-1)">-1</button>
+<button onclick="alterarHP(1)">+1</button>
+<button onclick="alterarHP(-5)">-5</button>
+<button onclick="alterarHP(5)">+5</button>
+</td>
+</tr>
+<tr><td colspan="4"><div class="barra"><div id="hpBar" class="hp"></div></div></td></tr>
+
+<tr>
+<td>Mana (MP)</td>
+<td contenteditable id="mpAtual">20</td>
+<td contenteditable id="mpMax">30</td>
+<td>
+<button onclick="alterarMP(-1)">-1</button>
+<button onclick="alterarMP(1)">+1</button>
+<button onclick="alterarMP(-5)">-5</button>
+<button onclick="alterarMP(5)">+5</button>
+</td>
+</tr>
+<tr><td colspan="4"><div class="barra"><div id="mpBar" class="mp"></div></div></td></tr>
+</table>
+
+<!-- ===== BLOCO 2 (ATRIBUTOS + DEFESA) CONTINUA AQUI, INTACTO ===== -->
+<!-- (não mexi em nada) -->
+<style>
+/* ================= ATRIBUTOS ================= */
+.atributos-wrap{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:18px;
+  margin:30px 0;
+}
+
+.atributo{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:3px solid #caa14a;
+  background:radial-gradient(circle at top,#2b2114,#0e0b07);
+  box-shadow:0 0 12px #000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:#f5e6b8;
+}
+
+.atributo .valor{
+  font-size:30px;
+  font-weight:bold;
+  color:#ffd700;
+}
+
+.atributo .sigla{
+  font-size:18px;
+  letter-spacing:1px;
+}
+
+.atributo .nome{
+  font-size:12px;
+  opacity:.85;
+}
+
+.atributo[contenteditable]:focus{
+  outline:2px solid #ffd700;
+}
+
+/* ================= DEFESA ================= */
+.defesa-wrap{
+  background:linear-gradient(145deg,#1a140c,#0e0b07);
+  border:2px solid #caa14a;
+  border-radius:14px;
+  padding:20px;
+  color:#f5e6b8;
+}
+
+.defesa-topo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.escudo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.escudo-icone{
+  font-size:38px;
+}
+
+.escudo-info{
+  text-align:left;
+}
+
+.escudo-info .titulo{
+  font-size:14px;
+  opacity:.85;
+}
+
+.escudo-info .valor{
+  font-size:42px;
+  font-weight:bold;
+  color:#ffd700;
+}
+
+.formula{
+  font-size:12px;
+  opacity:.75;
+}
+
+.defesa-detalhes{
+  display:flex;
+  gap:40px;
+}
+
+.defesa-item{
+  text-align:center;
+}
+
+.defesa-item .rotulo{
+  font-size:14px;
+  opacity:.85;
+}
+
+.defesa-item .valor{
+  font-size:26px;
+  color:#ffd700;
+}
+
+.alerta{
+  color:#c0392b;
+  margin-top:10px;
+  display:none;
+}
+</style>
+
+<h2>Atributos</h2>
+
+<div class="atributos-wrap">
+  <div class="atributo" contenteditable id="for"><div class="valor">2</div><div class="sigla">FOR</div><div class="nome">Força</div></div>
+  <div class="atributo" contenteditable id="des"><div class="valor">2</div><div class="sigla">DES</div><div class="nome">Destreza</div></div>
+  <div class="atributo" contenteditable id="con"><div class="valor">2</div><div class="sigla">CON</div><div class="nome">Constituição</div></div>
+  <div class="atributo" contenteditable id="int"><div class="valor">2</div><div class="sigla">INT</div><div class="nome">Inteligência</div></div>
+  <div class="atributo" contenteditable id="sab"><div class="valor">2</div><div class="sigla">SAB</div><div class="nome">Sabedoria</div></div>
+  <div class="atributo" contenteditable id="car"><div class="valor">2</div><div class="sigla">CAR</div><div class="nome">Carisma</div></div>
+</div>
+
+<h2>Defesa</h2>
+
+<div class="defesa-wrap">
+  <div class="defesa-topo">
+    <div class="escudo">
+      <div class="escudo-icone">🛡️</div>
+      <div class="escudo-info">
+        <div class="titulo">DEFESA</div>
+        <div class="valor" id="defesa">10</div>
+        <div class="formula">10 + DES + Equip</div>
+      </div>
+    </div>
+
+    <div class="defesa-detalhes">
+      <div class="defesa-item">
+        <div class="rotulo">BLOQUEIO</div>
+        <div class="valor" id="bloqueio">0</div>
+      </div>
+      <div class="defesa-item">
+        <div class="rotulo">ESQUIVA</div>
+        <div class="valor" id="esquiva">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alerta" id="alertaArmadura">
+    ⚠️ Esquiva reduzida por armadura pesada
+  </div>
+</div>
+
+<script>
+/* ================= ARMADURAS ================= */
+const armaduras={
+  nenhuma:{def:0,bloq:0,pen:0},
+  leve:{def:2,bloq:0,pen:0},
+  media:{def:4,bloq:1,pen:1},
+  pesada:{def:6,bloq:2,pen:3}
+};
+
+/* ================= ATRIBUTOS ================= */
+function valorAttr(id){
+  return +document.querySelector(`#${id} .valor`).innerText||0;
+}
+
+/* ================= DEFESA ================= */
+function atualizarDefesa(){
+  const des=valorAttr("des");
+  const forca=valorAttr("for");
+  const arm=armaduras[armadura.value];
+
+  defesa.innerText = 10 + des + arm.def;
+  bloqueio.innerText = forca + arm.bloq;
+
+  const esqu = Math.max(des - arm.pen,0);
+  esquiva.innerText = esqu;
+
+  alertaArmadura.style.display = arm.pen>0 ? "block":"none";
+}
+
+/* ================= EVENTOS ================= */
+document.querySelectorAll(".atributo").forEach(a=>{
+  a.addEventListener("input", atualizarDefesa);
+});
+armadura.addEventListener("change", atualizarDefesa);
+
+atualizarDefesa();
+</script>
+</section>
+<!-- 🔴 FECHAMENTO CORRETO DA ABA FICHA -->
+<!-- ================= ABA HABILIDADES ================= -->
+<section id="aba-habilidades">
+  <style>
+/* ===== HABILIDADES ===== */
+.habilidades-wrap{
+  margin-top:40px;
+  background:linear-gradient(145deg,#1a140c,#0e0b07);
+  border:2px solid #caa14a;
+  border-radius:14px;
+  padding:20px;
+  color:#f5e6b8;
+}
+
+.hab-topo{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+.hab-topo input, .hab-topo select{
+  background:#2a1f12;
+  color:#f5e6b8;
+  border:1px solid #8b6a2e;
+  padding:6px;
+  border-radius:6px;
+}
+
+.habilidade{
+  border:1px solid #6b4f1d;
+  border-radius:10px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+.hab-header{
+  padding:10px;
+  cursor:pointer;
+  background:#2a1f12;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.hab-header:hover{
+  background:#3a2b14;
+}
+
+.hab-nome{
+  font-weight:bold;
+}
+
+.hab-tipo{
+  font-size:12px;
+  opacity:.8;
+}
+
+.hab-body{
+  display:none;
+  padding:10px;
+  background:#1a140c;
+  border-top:1px solid #6b4f1d;
+}
+
+.mestre-tools{
+  margin-top:10px;
+  display:none;
+  gap:10px;
+}
+
+.mestre-tools button{
+  background:#3a2b14;
+  color:#f5e6b8;
+  border:1px solid #8b6a2e;
+  padding:4px 6px;
+  border-radius:6px;
+}
+
+/* ===== MODO MESTRE ===== */
+.mestre-toggle{
+  margin-top:10px;
+}
+
+.mestre-toggle input{
+  margin-right:5px;
+}
+</style>
+
+<h2>Habilidades</h2>
+
+<div class="habilidades-wrap">
+
+  <div class="hab-topo">
+    <input id="buscaHab" placeholder="Pesquisar habilidade">
+    <select id="filtroTipo">
+      <option value="">Todos os tipos</option>
+      <option value="Ativa">Ativa</option>
+      <option value="Passiva">Passiva</option>
+      <option value="Ritual">Ritual</option>
+    </select>
+    <select id="ordemHab">
+      <option value="az">Ordenar A–Z</option>
+      <option value="za">Ordenar Z–A</option>
+    </select>
+  </div>
+
+  <div id="listaHabilidades"></div>
+
+  <div class="mestre-toggle">
+    <label>
+      <input type="checkbox" id="modoMestre">
+      Modo Mestre
+    </label>
+  </div>
+
+  <div id="painelMestre" style="display:none;margin-top:15px;">
+    <h3>Adicionar Habilidade</h3>
+    <input id="novaNome" placeholder="Nome">
+    <select id="novaTipo">
+      <option>Ativa</option>
+      <option>Passiva</option>
+      <option>Ritual</option>
+    </select>
+    <textarea id="novaDesc" placeholder="Descrição" style="width:100%;height:60px"></textarea>
+    <button onclick="adicionarHabilidade()">Adicionar</button>
+  </div>
+
+</div>
+
+<script>
+/* ===== DADOS ===== */
+let habilidades = [
+  {nome:"Ataque Rápido",tipo:"Ativa",desc:"Realiza um ataque extra."},
+  {nome:"Resistência Natural",tipo:"Passiva",desc:"Reduz dano recebido."},
+  {nome:"Ritual das Cinzas",tipo:"Ritual",desc:"Manipula cinzas e fogo."}
+];
+
+/* ===== RENDER ===== */
+function renderHabilidades(){
+  let lista=[...habilidades];
+
+  const busca=buscaHab.value.toLowerCase();
+  const tipo=filtroTipo.value;
+  const ordem=ordemHab.value;
+
+  if(busca)
+    lista=lista.filter(h=>h.nome.toLowerCase().includes(busca));
+  if(tipo)
+    lista=lista.filter(h=>h.tipo===tipo);
+
+  lista.sort((a,b)=>{
+    return ordem==="az"
+      ? a.nome.localeCompare(b.nome)
+      : b.nome.localeCompare(a.nome);
+  });
+
+  listaHabilidades.innerHTML="";
+
+  lista.forEach((h,i)=>{
+    const div=document.createElement("div");
+    div.className="habilidade";
+
+    div.innerHTML=`
+      <div class="hab-header">
+        <span class="hab-nome">${h.nome}</span>
+        <span class="hab-tipo">${h.tipo}</span>
+      </div>
+      <div class="hab-body">
+        <p>${h.desc}</p>
+        <div class="mestre-tools">
+          <button onclick="editarHab(${i})">Editar</button>
+          <button onclick="removerHab(${i})">Remover</button>
+        </div>
+      </div>
+    `;
+
+    div.querySelector(".hab-header").onclick=()=>{
+      const body=div.querySelector(".hab-body");
+      body.style.display=body.style.display==="block"?"none":"block";
+    };
+
+    if(modoMestre.checked)
+      div.querySelector(".mestre-tools").style.display="flex";
+
+    listaHabilidades.appendChild(div);
+  });
+}
+
+/* ===== MESTRE ===== */
+modoMestre.onchange=()=>{
+  painelMestre.style.display=modoMestre.checked?"block":"none";
+  renderHabilidades();
+};
+
+function adicionarHabilidade(){
+  if(!novaNome.value)return;
+  habilidades.push({
+    nome:novaNome.value,
+    tipo:novaTipo.value,
+    desc:novaDesc.value
+  });
+  novaNome.value="";
+  novaDesc.value="";
+  renderHabilidades();
+}
+
+function removerHab(i){
+  if(confirm("Remover habilidade?")){
+    habilidades.splice(i,1);
+    renderHabilidades();
+  }
+}
+
+function editarHab(i){
+  const h=habilidades[i];
+  const n=prompt("Nome:",h.nome);
+  const d=prompt("Descrição:",h.desc);
+  if(n!==null){h.nome=n;h.desc=d;}
+  renderHabilidades();
+}
+
+/* ===== EVENTOS ===== */
+buscaHab.oninput=renderHabilidades;
+filtroTipo.onchange=renderHabilidades;
+ordemHab.onchange=renderHabilidades;
+
+renderHabilidades();
+</script>
+  
+</section>
+
+<!-- ================= ABA RITUAIS ================= -->
+<section id="aba-rituais">
+   <h2>📜 Rituais</h2>
+
+  <div class="lista-rituais" id="listaRituais"></div>
+
+  <button class="botao" onclick="novoRitual()">➕ Novo Ritual</button>
+</section>
+
+<style>
+.grimorio{
+  background:#1c1c28;
+  border:2px solid #5a4a2a;
+  border-radius:10px;
+  padding:15px;
+  margin-top:20px;
+}
+
+.lista-rituais details{
+  background:#14141f;
+  border:1px solid #4a3a1a;
+  border-radius:6px;
+  margin-bottom:8px;
+  padding:6px;
+}
+
+.lista-rituais summary{
+  cursor:pointer;
+  font-weight:bold;
+  color:#e6d8a3;
+}
+
+.lista-rituais p{
+  margin-top:6px;
+  font-size:14px;
+  color:#ccc;
+}
+</style>
+
+<script>
+let rituais = [];
+
+function renderRituais(){
+  const lista = document.getElementById("listaRituais");
+  lista.innerHTML = "";
+
+  rituais.forEach((r,i)=>{
+    lista.innerHTML += `
+      <details>
+        <summary>${r.nome}</summary>
+        <p>${r.desc}</p>
+        <button class="botao" onclick="removerRitual(${i})">❌ Remover</button>
+      </details>
+    `;
+  });
+}
+
+function novoRitual(){
+  const nome = prompt("Nome do ritual:");
+  const desc = prompt("Descrição do ritual:");
+  if(nome){
+    rituais.push({nome, desc});
+    renderRituais();
+  }
+}
+
+function removerRitual(i){
+  rituais.splice(i,1);
+  renderRituais();
+}
+
+renderRituais();
+</script>
+
+</section>
+
+<!-- ================= ABA GRÁFICO ================= -->
+<section id="aba-grafico">
+  <h1 class="titulo-pericias">PERÍCIAS</h1>
+
+<div class="pericias-box">
+
+  <div class="pericia-linha cabecalho">
+    <span>Perícia</span>
+    <span>Atr.</span>
+    <span>Base</span>
+    <span>Bônus</span>
+    <span>Total</span>
+  </div>
+
+  <div class="pericia-linha"><span class="nome">Percepção</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Furtividade</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Iniciativa</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Intuição</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Mestria de Elemento</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Persuasão</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Intimidação</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Enganação</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Arcanismo</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Religião</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Atletismo</span><span>FOR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Acrobacia</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Montaria</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Investigação</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Manuseio de Animais</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Sobrevivência</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Arrombamento</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Resistência (Fortitude)</span><span>CON</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Atualidade</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Luta</span><span>FOR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Pontaria</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Prestidigitação</span><span>AGI</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Medicina</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+</div>
+
+</section>
+
+</div>
+
+<script>
+function abrirAba(id,btn){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("ativa"));
+  document.getElementById(id).classList.add("ativa");
+  document.querySelectorAll(".menu-abas button").forEach(b=>b.classList.remove("ativo"));
+  btn.classList.add("ativo");
+ }
+</script>
+
+<script>
+/* ================= SISTEMA DE ELEMENTOS ================= */
+
+/* ===== LISTA COMPLETA ===== */
+const elementos = [
+  "🔥 Fogo",
+  "💧 Água",
+  "🌍 Terra",
+  "🌬️ Ar",
+  "✨ Luz",
+  "🌑 Trevas",
+  "🌿 Natureza",
+  "🌀 Éter",
+  "🧠 Mente"
+];
+
+/* ===== RELAÇÕES ===== */
+const relacoes = {
+  "🔥 Fogo":{forte:["🌿 Natureza"],fraco:["💧 Água"]},
+  "💧 Água":{forte:["🔥 Fogo"],fraco:["🌿 Natureza"]},
+  "🌍 Terra":{forte:["🌬️ Ar"],fraco:["💧 Água"]},
+  "🌬️ Ar":{forte:["🌍 Terra"],fraco:["🔥 Fogo"]},
+  "✨ Luz":{forte:["🌑 Trevas"],fraco:["🌀 Éter"]},
+  "🌑 Trevas":{forte:["✨ Luz"],fraco:["🧠 Mente"]},
+  "🌿 Natureza":{forte:["💧 Água"],fraco:["🔥 Fogo"]},
+  "🌀 Éter":{forte:["✨ Luz"],fraco:["🧠 Mente"]},
+  "🧠 Mente":{forte:["🌑 Trevas"],fraco:["🔥 Fogo"]}
+};
+
+/* ===== POPULAR SELECT ===== */
+const selElemento = document.getElementById("elemento");
+
+elementos.forEach(e=>{
+  const opt=document.createElement("option");
+  opt.value=e;
+  opt.textContent=e;
+  selElemento.appendChild(opt);
+});
+
+/* ===== ATUALIZAR INFO ===== */
+function atualizarElemento(){
+  const el = selElemento.value;
+  const info = document.getElementById("infoElemento");
+
+  if(!relacoes[el]){
+    info.innerHTML = "Neutro contra todos";
+    info.style.color="#ccc";
+    return;
+  }
+
+  const forte = relacoes[el].forte?.join(", ") || "—";
+  const fraco = relacoes[el].fraco?.join(", ") || "—";
+
+  info.innerHTML = `
+    <span style="color:#6fda6f">Vantagem: ${forte}</span><br>
+    <span style="color:#e06b6b">Fraqueza: ${fraco}</span>
+  `;
+ }
+
+selElemento.addEventListener("change", atualizarElemento);
+atualizarElemento();
+</script>
+
+</body>
+</html>
