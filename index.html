@@ -599,6 +599,7 @@ function renderHabilidades(){
       <div class="hab-body">
         <p>${h.desc}</p>
         <div class="mestre-tools">
+         <button onclick="editarHab('${h.nome}')">Editar</button>
         <button onclick="editarHab('${h.nome}')">Editar</button>
 <button onclick="removerHab('${h.nome}')">Remover</button>
         </div>
@@ -638,6 +639,7 @@ function adicionarHabilidade(){
 function removerHab(nome){
   if(confirm("Remover habilidade?")){
       habilidades = habilidades.filter(h => h.nome !== nome);
+    habilidades = habilidades.filter(h => h.nome !== nome);
     renderHabilidades();
     salvarFicha();
   }
