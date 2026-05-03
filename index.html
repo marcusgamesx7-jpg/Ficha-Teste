@@ -14,6 +14,7 @@ body{
   color:#e6d8a3;
   font-family:"Cinzel",serif;
   padding:20px;
+  margin:0;
 }
 
 .ficha{
@@ -38,16 +39,23 @@ body{
   background:#2a1f12;
   color:#e6d8a3;
   border:2px solid #6b4f1d;
-  padding:6px 14px;
+  padding:8px 16px;
   border-radius:8px;
   font-family:"Cinzel",serif;
   cursor:pointer;
+  font-size:14px;
+  transition: all 0.3s;
+}
+
+.menu-abas button:hover{
+  background:#3a2b14;
 }
 
 .menu-abas button.ativo{
   background:#3a2b14;
   border-color:#ffd700;
   color:#ffd700;
+  box-shadow: 0 0 10px rgba(255,215,0,0.3);
 }
 
 /* ===== PERÍCIAS ===== */
@@ -64,13 +72,14 @@ body{
   border:1px solid #6b4f1d;
   border-radius:10px;
   padding:12px;
+  margin:0 auto;
 }
 
 .pericia-linha{
   display:grid;
   grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
   gap:10px;
-  padding:6px 8px;
+  padding:8px;
   align-items:center;
   border-bottom:1px solid #2a1f12;
 }
@@ -90,7 +99,13 @@ body{
 .pericia-linha span[contenteditable]{
   background:#2a1f12;
   border-radius:4px;
-  padding:2px 4px;
+  padding:4px 6px;
+  cursor:text;
+}
+
+.pericia-linha span[contenteditable]:hover{
+  background:#3a2b14;
+  border: 1px solid #6b4f1d;
 }
 
 .pericia-linha .total{
@@ -109,6 +124,7 @@ body{
   display:flex;
   gap:20px;
   flex-wrap:wrap;
+  margin-bottom:20px;
 }
 
 .topo img{
@@ -119,23 +135,47 @@ body{
   border:2px solid #6b4f1d;
 }
 
-.info span, td[contenteditable]{
+.info{
+  flex:1;
+  min-width:300px;
+}
+
+.info p{
+  margin:8px 0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.info span, .info select, td[contenteditable]{
   background:#2a1f12;
-  padding:4px 6px;
+  padding:6px 8px;
   border-radius:4px;
+  border:1px solid #6b4f1d;
+}
+
+.info span[contenteditable]{
+  cursor:text;
+}
+
+.info span[contenteditable]:hover{
+  background:#3a2b14;
 }
 
 button{
   background:#3a2b14;
   color:#e6d8a3;
   border:1px solid #8b6a2e;
-  padding:5px 8px;
+  padding:8px 12px;
   border-radius:6px;
   cursor:pointer;
+  font-family:"Cinzel",serif;
+  transition:all 0.3s;
 }
 
 button:hover{
   background:#5a421c;
+  border-color:#ffd700;
 }
 
 table{
@@ -146,19 +186,25 @@ table{
 
 th,td{
   border:1px solid #6b4f1d;
-  padding:6px;
+  padding:8px;
 }
 
 th{
   background:#2a1f12;
+  color:#ffd700;
+}
+
+td[contenteditable]{
+  cursor:text;
 }
 
 .barra{
   width:100%;
-  height:18px;
+  height:20px;
   background:#333;
   border-radius:10px;
   overflow:hidden;
+  border:1px solid #6b4f1d;
 }
 
 .barra div{
@@ -180,6 +226,12 @@ section{
 
 section.ativa{
   display:block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ================= ATRIBUTOS ================= */
@@ -204,10 +256,17 @@ section.ativa{
   align-items:center;
   text-align:center;
   color:#f5e6b8;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.atributo:hover{
+  box-shadow:0 0 20px rgba(202,161,74,0.5);
+  border-color:#ffd700;
 }
 
 .atributo .valor{
-  font-size:30px;
+  font-size:32px;
   font-weight:bold;
   color:#ffd700;
 }
@@ -215,15 +274,12 @@ section.ativa{
 .atributo .sigla{
   font-size:18px;
   letter-spacing:1px;
+  color:#caa14a;
 }
 
 .atributo .nome{
   font-size:12px;
   opacity:.85;
-}
-
-.atributo[contenteditable]:focus{
-  outline:2px solid #ffd700;
 }
 
 /* ================= DEFESA ================= */
@@ -233,22 +289,25 @@ section.ativa{
   border-radius:14px;
   padding:20px;
   color:#f5e6b8;
+  margin:20px 0;
 }
 
 .defesa-topo{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  flex-wrap:wrap;
+  gap:20px;
 }
 
 .escudo{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:15px;
 }
 
 .escudo-icone{
-  font-size:38px;
+  font-size:48px;
 }
 
 .escudo-info{
@@ -258,6 +317,7 @@ section.ativa{
 .escudo-info .titulo{
   font-size:14px;
   opacity:.85;
+  color:#caa14a;
 }
 
 .escudo-info .valor{
@@ -283,22 +343,28 @@ section.ativa{
 .defesa-item .rotulo{
   font-size:14px;
   opacity:.85;
+  color:#caa14a;
 }
 
 .defesa-item .valor{
-  font-size:26px;
+  font-size:28px;
   color:#ffd700;
+  font-weight:bold;
 }
 
 .alerta{
-  color:#c0392b;
+  color:#ff9800;
   margin-top:10px;
   display:none;
+  padding:10px;
+  background:rgba(255,152,0,0.1);
+  border-radius:6px;
+  border-left:4px solid #ff9800;
 }
 
 /* ===== HABILIDADES ===== */
 .habilidades-wrap{
-  margin-top:40px;
+  margin-top:20px;
   background:linear-gradient(145deg,#1a140c,#0e0b07);
   border:2px solid #caa14a;
   border-radius:14px;
@@ -317,8 +383,11 @@ section.ativa{
   background:#2a1f12;
   color:#f5e6b8;
   border:1px solid #8b6a2e;
-  padding:6px;
+  padding:8px;
   border-radius:6px;
+  font-family:"Cinzel",serif;
+  flex:1;
+  min-width:150px;
 }
 
 .habilidade{
@@ -329,12 +398,13 @@ section.ativa{
 }
 
 .hab-header{
-  padding:10px;
+  padding:12px;
   cursor:pointer;
   background:#2a1f12;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  transition:all 0.3s;
 }
 
 .hab-header:hover{
@@ -343,89 +413,118 @@ section.ativa{
 
 .hab-nome{
   font-weight:bold;
+  color:#ffd700;
 }
 
 .hab-tipo{
   font-size:12px;
   opacity:.8;
+  background:#1a140c;
+  padding:4px 8px;
+  border-radius:4px;
 }
 
 .hab-body{
   display:none;
-  padding:10px;
+  padding:12px;
   background:#1a140c;
   border-top:1px solid #6b4f1d;
+}
+
+.hab-body p{
+  margin:10px 0;
+  line-height:1.6;
 }
 
 .mestre-tools{
   margin-top:10px;
   display:none;
-  gap:10px;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
 .mestre-tools button{
   background:#3a2b14;
   color:#f5e6b8;
   border:1px solid #8b6a2e;
-  padding:4px 6px;
+  padding:6px 10px;
   border-radius:6px;
+  font-size:12px;
 }
 
 .mestre-toggle{
-  margin-top:10px;
+  margin-top:15px;
+  padding:10px;
+  background:#2a1f12;
+  border-radius:6px;
 }
 
 .mestre-toggle input{
-  margin-right:5px;
+  margin-right:8px;
+  cursor:pointer;
+}
+
+.mestre-toggle label{
+  cursor:pointer;
+  user-select:none;
 }
 
 /* ===== RITUAIS ===== */
-.grimorio{
-  background:#1c1c28;
-  border:2px solid #5a4a2a;
-  border-radius:10px;
-  padding:15px;
-  margin-top:20px;
+.lista-rituais{
+  margin:15px 0;
 }
 
 .lista-rituais details{
-  background:#14141f;
-  border:1px solid #4a3a1a;
-  border-radius:6px;
-  margin-bottom:8px;
-  padding:6px;
+  background:#2a1f12;
+  border:1px solid #6b4f1d;
+  border-radius:8px;
+  margin-bottom:10px;
+  padding:10px;
+}
+
+.lista-rituais details:hover{
+  background:#3a2b14;
 }
 
 .lista-rituais summary{
   cursor:pointer;
   font-weight:bold;
-  color:#e6d8a3;
+  color:#ffd700;
+  outline:none;
 }
 
 .lista-rituais p{
-  margin-top:6px;
+  margin-top:10px;
   font-size:14px;
-  color:#ccc;
+  color:#e6d8a3;
+  line-height:1.6;
 }
 
 /* ===== BOTÕES DE AÇÃO ===== */
 .botoes-acao {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 .botoes-acao button {
-  flex: 1;
-  min-width: 120px;
+  min-width:140px;
+  padding:10px 16px;
 }
 
 .alerta-validacao {
-  color: #ffd700;
-  font-size: 12px;
-  margin-top: 5px;
-  display: none;
+  color:#ffd700;
+  font-size:12px;
+  margin-top:5px;
+  display:none;
+}
+
+h1, h2, h3 {
+  color:#ffd700;
+  border-bottom:2px solid #6b4f1d;
+  padding-bottom:10px;
 }
 
 </style>
@@ -436,10 +535,10 @@ section.ativa{
 <div class="ficha">
 
 <div class="menu-abas">
-  <button class="ativo" onclick="abrirAba('aba-ficha',this)">Ficha</button>
-  <button onclick="abrirAba('aba-habilidades',this)">Habilidades</button>
-  <button onclick="abrirAba('aba-rituais',this)">Rituais</button>
-  <button onclick="abrirAba('aba-grafico',this)">Perícias</button>
+  <button class="ativo" onclick="abrirAba('aba-ficha',this)">📜 Ficha</button>
+  <button onclick="abrirAba('aba-habilidades',this)">⚔️ Habilidades</button>
+  <button onclick="abrirAba('aba-rituais',this)">📿 Rituais</button>
+  <button onclick="abrirAba('aba-grafico',this)">📊 Perícias</button>
 </div>
 
 <!-- ================= ABA FICHA ================= -->
@@ -448,7 +547,7 @@ section.ativa{
 <h1 style="text-align:center">📜 Ficha de RPG</h1>
 
 <div class="topo">
-  <img id="imgPersonagem" src="https://via.placeholder.com/180x240">
+  <img id="imgPersonagem" src="https://via.placeholder.com/180x240?text=Personagem">
 
   <div class="info">
     <p><b>Nome:</b> <span contenteditable id="nome">Herói</span></p>
@@ -472,8 +571,10 @@ section.ativa{
       </select>
     </p>
  
-    <button onclick="definirImagem()">Adicionar imagem</button>
-    <button onclick="removerImagem()">Remover imagem</button>
+    <p>
+      <button onclick="definirImagem()">🖼️ Adicionar imagem</button>
+      <button onclick="removerImagem()">❌ Remover imagem</button>
+    </p>
   </div>
 </div>
 
@@ -512,12 +613,12 @@ section.ativa{
 <h2>Atributos</h2>
 
 <div class="atributos-wrap">
-  <div class="atributo" contenteditable id="for"><div class="valor">2</div><div class="sigla">FOR</div><div class="nome">Força</div></div>
-  <div class="atributo" contenteditable id="des"><div class="valor">2</div><div class="sigla">DES</div><div class="nome">Destreza</div></div>
-  <div class="atributo" contenteditable id="con"><div class="valor">2</div><div class="sigla">CON</div><div class="nome">Constituição</div></div>
-  <div class="atributo" contenteditable id="int"><div class="valor">2</div><div class="sigla">INT</div><div class="nome">Inteligência</div></div>
-  <div class="atributo" contenteditable id="sab"><div class="valor">2</div><div class="sigla">SAB</div><div class="nome">Sabedoria</div></div>
-  <div class="atributo" contenteditable id="car"><div class="valor">2</div><div class="sigla">CAR</div><div class="nome">Carisma</div></div>
+  <div class="atributo" id="for" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">FOR</div><div class="nome">Força</div></div>
+  <div class="atributo" id="des" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">DES</div><div class="nome">Destreza</div></div>
+  <div class="atributo" id="con" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">CON</div><div class="nome">Constituição</div></div>
+  <div class="atributo" id="int" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">INT</div><div class="nome">Inteligência</div></div>
+  <div class="atributo" id="sab" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">SAB</div><div class="nome">Sabedoria</div></div>
+  <div class="atributo" id="car" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">CAR</div><div class="nome">Carisma</div></div>
 </div>
 
 <h2>Defesa</h2>
@@ -551,9 +652,9 @@ section.ativa{
 </div>
 
 <div class="botoes-acao">
-  <button onclick="exportarFicha()">📥 Exportar Ficha</button>
-  <button onclick="importarFicha()">📤 Importar Ficha</button>
-  <button onclick="resetarFicha()">🔄 Resetar Ficha</button>
+  <button onclick="exportarFicha()">📥 Exportar</button>
+  <button onclick="importarFicha()">📤 Importar</button>
+  <button onclick="resetarFicha()">🔄 Resetar</button>
 </div>
 
 </section>
@@ -561,19 +662,19 @@ section.ativa{
 <!-- ================= ABA HABILIDADES ================= -->
 <section id="aba-habilidades">
 
-<h2>Habilidades</h2>
+<h2>⚔️ Habilidades</h2>
 
 <div class="habilidades-wrap">
 
   <div class="hab-topo">
-    <input id="buscaHab" placeholder="Pesquisar habilidade">
-    <select id="filtroTipo">
+    <input id="buscaHab" placeholder="🔍 Pesquisar habilidade" onkeyup="renderHabilidades()">
+    <select id="filtroTipo" onchange="renderHabilidades()">
       <option value="">Todos os tipos</option>
       <option value="Ativa">Ativa</option>
       <option value="Passiva">Passiva</option>
       <option value="Ritual">Ritual</option>
     </select>
-    <select id="ordemHab">
+    <select id="ordemHab" onchange="renderHabilidades()">
       <option value="az">Ordenar A–Z</option>
       <option value="za">Ordenar Z–A</option>
     </select>
@@ -583,21 +684,21 @@ section.ativa{
 
   <div class="mestre-toggle">
     <label>
-      <input type="checkbox" id="modoMestre">
-      Modo Mestre
+      <input type="checkbox" id="modoMestre" onchange="toggleModoMestre()">
+      🎭 Modo Mestre
     </label>
   </div>
 
-  <div id="painelMestre" style="display:none;margin-top:15px;">
+  <div id="painelMestre" style="display:none;margin-top:15px;background:#2a1f12;padding:15px;border-radius:8px;">
     <h3>Adicionar Habilidade</h3>
-    <input id="novaNome" placeholder="Nome">
-    <select id="novaTipo">
+    <input id="novaNome" placeholder="Nome da habilidade" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;">
+    <select id="novaTipo" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;">
       <option>Ativa</option>
       <option>Passiva</option>
       <option>Ritual</option>
     </select>
-    <textarea id="novaDesc" placeholder="Descrição" style="width:100%;height:60px"></textarea>
-    <button onclick="adicionarHabilidade()">Adicionar</button>
+    <textarea id="novaDesc" placeholder="Descrição" style="width:100%;height:60px;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;font-family:Cinzel,serif;"></textarea>
+    <button onclick="adicionarHabilidade()" style="width:100%;margin-top:10px;">➕ Adicionar</button>
   </div>
 
 </div>
@@ -606,16 +707,16 @@ section.ativa{
 
 <!-- ================= ABA RITUAIS ================= -->
 <section id="aba-rituais">
-   <h2>📜 Rituais</h2>
+   <h2>📿 Rituais</h2>
 
   <div class="lista-rituais" id="listaRituais"></div>
 
-  <button class="botao" onclick="novoRitual()">➕ Novo Ritual</button>
+  <button onclick="novoRitual()" style="width:100%;margin-top:10px;">➕ Novo Ritual</button>
 </section>
 
-<!-- ================= ABA GRÁFICO ================= -->
+<!-- ================= ABA PERÍCIAS ================= -->
 <section id="aba-grafico">
-  <h1 class="titulo-pericias">PERÍCIAS</h1>
+  <h1 class="titulo-pericias">📊 PERÍCIAS</h1>
 
 <div class="pericias-box">
 
@@ -627,29 +728,29 @@ section.ativa{
     <span>Total</span>
   </div>
 
-  <div class="pericia-linha"><span class="nome">Percepção</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Furtividade</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Iniciativa</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Intuição</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Mestria de Elemento</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Persuasão</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Intimidação</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Enganação</span><span>CAR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Arcanismo</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Religião</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Atletismo</span><span>FOR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Acrobacia</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Montaria</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Investigação</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Manuseio de Animais</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Sobrevivência</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Arrombamento</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Resistência (Fortitude)</span><span>CON</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Atualidade</span><span>INT</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Luta</span><span>FOR</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Pontaria</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Prestidigitação</span><span>DES</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Medicina</span><span>SAB</span><span contenteditable>0</span><span contenteditable>0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Percepção</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Furtividade</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Iniciativa</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Intuição</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Mestria de Elemento</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Persuasão</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Intimidação</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Enganação</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Arcanismo</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Religião</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Atletismo</span><span>FOR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Acrobacia</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Montaria</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Investigação</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Manuseio de Animais</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Sobrevivência</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Arrombamento</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Resistência (Fortitude)</span><span>CON</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Atualidade</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Luta</span><span>FOR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Pontaria</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Prestidigitação</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Medicina</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
 </div>
 
 </section>
@@ -659,7 +760,6 @@ section.ativa{
 <script>
 /* ================= CONFIGURAÇÃO CENTRALIZADA ================= */
 
-// Centralizar atributos
 const ATRIBUTOS = {
   FOR: { nome: "Força", sigla: "FOR" },
   DES: { nome: "Destreza", sigla: "DES" },
@@ -669,7 +769,6 @@ const ATRIBUTOS = {
   CAR: { nome: "Carisma", sigla: "CAR" }
 };
 
-// ================= ARMADURAS ================= 
 const ARMADURAS = {
   nenhuma: { def: 0, bloq: 0, pen: 0 },
   leve: { def: 2, bloq: 0, pen: 0 },
@@ -677,27 +776,50 @@ const ARMADURAS = {
   pesada: { def: 6, bloq: 2, pen: 3 }
 };
 
-/* ================= LOCAL STORAGE AVANÇADO ================= */
 const STORAGE_KEY = "fichaRPG_COMPLETA";
 
-/* ===== DADOS GLOBAIS ===== */
 let habilidades = [
-  { nome: "Ataque Rápido", tipo: "Ativa", desc: "Realiza um ataque extra." },
-  { nome: "Resistência Natural", tipo: "Passiva", desc: "Reduz dano recebido." },
-  { nome: "Ritual das Cinzas", tipo: "Ritual", desc: "Manipula cinzas e fogo." }
+  { nome: "Ataque Rápido", tipo: "Ativa", desc: "Realiza um ataque extra no combate." },
+  { nome: "Resistência Natural", tipo: "Passiva", desc: "Reduz dano recebido em 10%." },
+  { nome: "Ritual das Cinzas", tipo: "Ritual", desc: "Manipula cinzas e fogo para diversos fins." }
 ];
 
 let rituais = [];
 
-/* ================= ABERTURA DE ABAS ================= */
+const elementos = [
+  "🔥 Fogo",
+  "💧 Água",
+  "🌍 Terra",
+  "🌬️ Ar",
+  "✨ Luz",
+  "🌑 Trevas",
+  "🌿 Natureza",
+  "🌀 Éter",
+  "🧠 Mente"
+];
+
+const relacoes = {
+  "🔥 Fogo": { forte: ["🌿 Natureza"], fraco: ["💧 Água"] },
+  "💧 Água": { forte: ["🔥 Fogo"], fraco: ["🌿 Natureza"] },
+  "🌍 Terra": { forte: ["🌬️ Ar"], fraco: ["💧 Água"] },
+  "🌬️ Ar": { forte: ["🌍 Terra"], fraco: ["🔥 Fogo"] },
+  "✨ Luz": { forte: ["🌑 Trevas"], fraco: ["🌀 Éter"] },
+  "🌑 Trevas": { forte: ["✨ Luz"], fraco: ["🧠 Mente"] },
+  "🌿 Natureza": { forte: ["💧 Água"], fraco: ["🔥 Fogo"] },
+  "🌀 Éter": { forte: ["✨ Luz"], fraco: ["🧠 Mente"] },
+  "🧠 Mente": { forte: ["🌑 Trevas"], fraco: ["🔥 Fogo"] }
+};
+
+/* ================= FUNÇÕES BÁSICAS ================= */
+
 function abrirAba(id, btn) {
   document.querySelectorAll("section").forEach(s => s.classList.remove("ativa"));
   document.getElementById(id).classList.add("ativa");
   document.querySelectorAll(".menu-abas button").forEach(b => b.classList.remove("ativo"));
   btn.classList.add("ativo");
+  salvarFicha();
 }
 
-/* ================= VALIDAÇÃO ================= */
 function validarNumero(valor) {
   const num = parseInt(valor);
   return !isNaN(num) ? num : 0;
@@ -710,27 +832,41 @@ function validarEntrada(valor, min = 0, max = null) {
   return num;
 }
 
-/* ================= ATRIBUTOS ================= */
 function valorAttr(id) {
-  return +document.querySelector(`#${id} .valor`).innerText || 0;
+  const el = document.querySelector(`#${id} .valor`);
+  return el ? validarNumero(el.innerText) : 0;
 }
 
 /* ================= DEFESA ================= */
+
 function atualizarDefesa() {
   const des = valorAttr("des");
   const forca = valorAttr("for");
-  const arm = ARMADURAS[armadura.value];
+  const arm = ARMADURAS[document.getElementById("armadura").value];
 
-  defesa.innerText = 10 + des + arm.def;
-  bloqueio.innerText = forca + arm.bloq;
+  document.getElementById("defesa").innerText = 10 + des + arm.def;
+  document.getElementById("bloqueio").innerText = forca + arm.bloq;
 
   const esqu = Math.max(des - arm.pen, 0);
-  esquiva.innerText = esqu;
+  document.getElementById("esquiva").innerText = esqu;
 
-  alertaArmadura.style.display = arm.pen > 0 ? "block" : "none";
+  document.getElementById("alertaArmadura").style.display = arm.pen > 0 ? "block" : "none";
+  salvarFicha();
+}
+
+function editarAtributo(el) {
+  const valor = el.querySelector(".valor");
+  const novoVal = prompt("Digite o novo valor:", valor.innerText);
+  if (novoVal !== null) {
+    const validado = validarEntrada(novoVal, 1, 20);
+    valor.innerText = validado;
+    atualizarDefesa();
+    salvarFicha();
+  }
 }
 
 /* ================= HP/MP ================= */
+
 function alterarHP(valor) {
   const atual = document.getElementById("hpAtual");
   const max = document.getElementById("hpMax");
@@ -762,34 +898,36 @@ function alterarMP(valor) {
 }
 
 function atualizarBarrasVida() {
-  const hpMax = parseInt(document.getElementById("hpMax").innerText);
-  const hpAtual = parseInt(document.getElementById("hpAtual").innerText);
+  const hpMax = parseInt(document.getElementById("hpMax").innerText) || 50;
+  const hpAtual = parseInt(document.getElementById("hpAtual").innerText) || 40;
   const hpPercent = (hpAtual / hpMax) * 100;
-  document.getElementById("hpBar").style.width = hpPercent + "%";
+  document.getElementById("hpBar").style.width = Math.max(0, Math.min(100, hpPercent)) + "%";
 
-  const mpMax = parseInt(document.getElementById("mpMax").innerText);
-  const mpAtual = parseInt(document.getElementById("mpAtual").innerText);
+  const mpMax = parseInt(document.getElementById("mpMax").innerText) || 30;
+  const mpAtual = parseInt(document.getElementById("mpAtual").innerText) || 20;
   const mpPercent = (mpAtual / mpMax) * 100;
-  document.getElementById("mpBar").style.width = mpPercent + "%";
+  document.getElementById("mpBar").style.width = Math.max(0, Math.min(100, mpPercent)) + "%";
 }
 
 /* ================= IMAGEM ================= */
+
 function definirImagem() {
-  const url = prompt("Cole a URL da imagem:");
+  const url = prompt("Cole a URL da imagem (http:// ou https://):");
   if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
-    imgPersonagem.src = url;
+    document.getElementById("imgPersonagem").src = url;
     salvarFicha();
   } else if (url) {
-    alert("URL inválida! Use http:// ou https://");
+    alert("❌ URL inválida! Use http:// ou https://");
   }
 }
 
 function removerImagem() {
-  imgPersonagem.src = "https://via.placeholder.com/180x240";
+  document.getElementById("imgPersonagem").src = "https://via.placeholder.com/180x240?text=Personagem";
   salvarFicha();
 }
 
 /* ================= PERÍCIAS ================= */
+
 function atualizarPericia(linha) {
   const spans = linha.querySelectorAll("span[contenteditable]");
   if (spans.length < 2) return;
@@ -802,42 +940,11 @@ function atualizarPericia(linha) {
   salvarFicha();
 }
 
-// Adicionar listeners para atualizar perícias
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
-    linha.querySelectorAll("span[contenteditable]").forEach(span => {
-      span.addEventListener("input", () => atualizarPericia(linha));
-    });
-  });
-});
-
 /* ================= ELEMENTOS ================= */
-const elementos = [
-  "🔥 Fogo",
-  "💧 Água",
-  "🌍 Terra",
-  "🌬️ Ar",
-  "✨ Luz",
-  "🌑 Trevas",
-  "🌿 Natureza",
-  "🌀 Éter",
-  "🧠 Mente"
-];
-
-const relacoes = {
-  "🔥 Fogo": { forte: ["🌿 Natureza"], fraco: ["💧 Água"] },
-  "💧 Água": { forte: ["🔥 Fogo"], fraco: ["🌿 Natureza"] },
-  "🌍 Terra": { forte: ["🌬️ Ar"], fraco: ["💧 Água"] },
-  "🌬️ Ar": { forte: ["🌍 Terra"], fraco: ["🔥 Fogo"] },
-  "✨ Luz": { forte: ["🌑 Trevas"], fraco: ["🌀 Éter"] },
-  "🌑 Trevas": { forte: ["✨ Luz"], fraco: ["🧠 Mente"] },
-  "🌿 Natureza": { forte: ["💧 Água"], fraco: ["🔥 Fogo"] },
-  "🌀 Éter": { forte: ["✨ Luz"], fraco: ["🧠 Mente"] },
-  "🧠 Mente": { forte: ["🌑 Trevas"], fraco: ["🔥 Fogo"] }
-};
 
 function popularElementos() {
   const selElemento = document.getElementById("elemento");
+  selElemento.innerHTML = '<option value="">Selecione um elemento</option>';
   elementos.forEach(e => {
     const opt = document.createElement("option");
     opt.value = e;
@@ -850,8 +957,8 @@ function atualizarElemento() {
   const el = document.getElementById("elemento").value;
   const info = document.getElementById("infoElemento");
 
-  if (!relacoes[el]) {
-    info.innerHTML = "Neutro contra todos";
+  if (!el || !relacoes[el]) {
+    info.innerHTML = "—";
     info.style.color = "#ccc";
     return;
   }
@@ -859,24 +966,21 @@ function atualizarElemento() {
   const forte = relacoes[el].forte?.join(", ") || "—";
   const fraco = relacoes[el].fraco?.join(", ") || "—";
 
-  info.innerHTML = `
-    <span style="color:#6fda6f">Vantagem: ${forte}</span><br>
-    <span style="color:#e06b6b">Fraqueza: ${fraco}</span>
-  `;
+  info.innerHTML = `<span style="color:#6fda6f">✓ ${forte}</span> | <span style="color:#e06b6b">✗ ${fraco}</span>`;
+  salvarFicha();
 }
 
 /* ================= HABILIDADES ================= */
+
 function renderHabilidades() {
   let lista = [...habilidades];
 
-  const busca = buscaHab.value.toLowerCase();
-  const tipo = filtroTipo.value;
-  const ordem = ordemHab.value;
+  const busca = document.getElementById("buscaHab").value.toLowerCase();
+  const tipo = document.getElementById("filtroTipo").value;
+  const ordem = document.getElementById("ordemHab").value;
 
-  if (busca)
-    lista = lista.filter(h => h.nome.toLowerCase().includes(busca));
-  if (tipo)
-    lista = lista.filter(h => h.tipo === tipo);
+  if (busca) lista = lista.filter(h => h.nome.toLowerCase().includes(busca));
+  if (tipo) lista = lista.filter(h => h.tipo === tipo);
 
   lista.sort((a, b) => {
     return ordem === "az"
@@ -884,53 +988,60 @@ function renderHabilidades() {
       : b.nome.localeCompare(a.nome);
   });
 
-  listaHabilidades.innerHTML = "";
+  const listaDiv = document.getElementById("listaHabilidades");
+  listaDiv.innerHTML = "";
 
-  lista.forEach((h, i) => {
+  if (lista.length === 0) {
+    listaDiv.innerHTML = "<p style='text-align:center;color:#999;'>Nenhuma habilidade encontrada</p>";
+    return;
+  }
+
+  lista.forEach(h => {
     const div = document.createElement("div");
     div.className = "habilidade";
 
     div.innerHTML = `
-      <div class="hab-header">
-        <span class="hab-nome">${h.nome}</span>
-        <span class="hab-tipo">${h.tipo}</span>
+      <div class="hab-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+        <div>
+          <span class="hab-nome">${h.nome}</span><br>
+          <span class="hab-tipo">${h.tipo}</span>
+        </div>
+        <span style="font-size:20px;cursor:pointer;">▼</span>
       </div>
       <div class="hab-body">
         <p>${h.desc}</p>
-        <div class="mestre-tools">
-          <button onclick="editarHab('${h.nome}')">Editar</button>
-          <button onclick="removerHab('${h.nome}')">Remover</button>
+        <div class="mestre-tools" style="${document.getElementById("modoMestre").checked ? 'display:flex' : 'display:none'}">
+          <button onclick="editarHab('${h.nome}')">✏️ Editar</button>
+          <button onclick="removerHab('${h.nome}')">🗑️ Remover</button>
         </div>
       </div>
     `;
 
-    div.querySelector(".hab-header").onclick = () => {
-      const body = div.querySelector(".hab-body");
-      body.style.display = body.style.display === "block" ? "none" : "block";
-    };
-
-    if (modoMestre.checked)
-      div.querySelector(".mestre-tools").style.display = "flex";
-
-    listaHabilidades.appendChild(div);
+    listaDiv.appendChild(div);
   });
 }
 
 function adicionarHabilidade() {
-  if (!novaNome.value) return;
+  const nome = document.getElementById("novaNome").value.trim();
+  if (!nome) {
+    alert("Digite o nome da habilidade!");
+    return;
+  }
+  
   habilidades.push({
-    nome: novaNome.value,
-    tipo: novaTipo.value,
-    desc: novaDesc.value
+    nome,
+    tipo: document.getElementById("novaTipo").value,
+    desc: document.getElementById("novaDesc").value || "Sem descrição"
   });
-  novaNome.value = "";
-  novaDesc.value = "";
+  
+  document.getElementById("novaNome").value = "";
+  document.getElementById("novaDesc").value = "";
   renderHabilidades();
   salvarFicha();
 }
 
 function removerHab(nome) {
-  if (confirm("Remover habilidade?")) {
+  if (confirm(`Remover "${nome}"?`)) {
     habilidades = habilidades.filter(h => h.nome !== nome);
     renderHabilidades();
     salvarFicha();
@@ -942,27 +1053,40 @@ function editarHab(nome) {
   if (!h) return;
 
   const n = prompt("Nome:", h.nome);
+  if (n === null) return;
+  
   const d = prompt("Descrição:", h.desc);
+  if (d === null) return;
 
-  if (n !== null) {
-    h.nome = n;
-    h.desc = d;
-    renderHabilidades();
-    salvarFicha();
-  }
+  h.nome = n;
+  h.desc = d;
+  renderHabilidades();
+  salvarFicha();
+}
+
+function toggleModoMestre() {
+  document.getElementById("painelMestre").style.display = 
+    document.getElementById("modoMestre").checked ? "block" : "none";
+  renderHabilidades();
 }
 
 /* ================= RITUAIS ================= */
+
 function renderRituais() {
   const lista = document.getElementById("listaRituais");
   lista.innerHTML = "";
 
+  if (rituais.length === 0) {
+    lista.innerHTML = "<p style='text-align:center;color:#999;'>Nenhum ritual adicionado</p>";
+    return;
+  }
+
   rituais.forEach((r, i) => {
     lista.innerHTML += `
       <details>
-        <summary>${r.nome}</summary>
+        <summary>📿 ${r.nome}</summary>
         <p>${r.desc}</p>
-        <button class="botao" onclick="removerRitual(${i})">❌ Remover</button>
+        <button onclick="removerRitual(${i})" style="background:#c0392b;margin-top:10px;">❌ Remover</button>
       </details>
     `;
   });
@@ -970,45 +1094,53 @@ function renderRituais() {
 
 function novoRitual() {
   const nome = prompt("Nome do ritual:");
+  if (!nome) return;
+  
   const desc = prompt("Descrição do ritual:");
-  if (nome) {
-    rituais.push({ nome, desc });
+  if (desc === null) return;
+  
+  rituais.push({ nome, desc });
+  renderRituais();
+  salvarFicha();
+}
+
+function removerRitual(i) {
+  if (confirm("Remover ritual?")) {
+    rituais.splice(i, 1);
     renderRituais();
     salvarFicha();
   }
 }
 
-function removerRitual(i) {
-  rituais.splice(i, 1);
-  renderRituais();
-  salvarFicha();
-}
-
 /* ================= SAVE/LOAD ================= */
+
 function salvarFicha() {
   const dados = {
     textos: {},
     selects: {},
-    imagem: imgPersonagem.src,
+    imagem: document.getElementById("imgPersonagem").src,
     habilidades,
     rituais,
     abaAtiva: document.querySelector("section.ativa")?.id || "aba-ficha",
-    habilidadesAbertas: []
+    pericias: []
   };
 
   document.querySelectorAll("[contenteditable][id]").forEach(el => {
-    dados.textos[el.id] = el.innerHTML;
+    dados.textos[el.id] = el.innerText;
   });
 
   document.querySelectorAll("select").forEach(sel => {
     dados.selects[sel.id] = sel.value;
   });
 
-  document.querySelectorAll(".habilidade").forEach(hab => {
-    const body = hab.querySelector(".hab-body");
-    const nome = hab.querySelector(".hab-nome")?.innerText;
-    if (body && body.style.display === "block" && nome) {
-      dados.habilidadesAbertas.push(nome);
+  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
+    const spans = linha.querySelectorAll("span[contenteditable]");
+    if (spans.length >= 2) {
+      dados.pericias.push({
+        nome: linha.querySelector(".nome").innerText,
+        base: spans[0].innerText,
+        bonus: spans[1].innerText
+      });
     }
   });
 
@@ -1016,87 +1148,125 @@ function salvarFicha() {
 }
 
 function carregarFicha() {
-  const dados = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if (!dados) return;
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) return;
 
-  for (const id in dados.textos) {
+  const dados = JSON.parse(saved);
+
+  Object.entries(dados.textos || {}).forEach(([id, valor]) => {
     const el = document.getElementById(id);
-    if (el) el.innerHTML = dados.textos[id];
-  }
+    if (el) el.innerText = valor;
+  });
 
-  for (const id in dados.selects) {
-    const sel = document.getElementById(id);
-    if (sel) {
-      sel.value = dados.selects[id];
-      sel.dispatchEvent(new Event("change"));
-    }
-  }
+  Object.entries(dados.selects || {}).forEach(([id, valor]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = valor;
+  });
 
-  if (dados.imagem) imgPersonagem.src = dados.imagem;
+  if (dados.imagem) document.getElementById("imgPersonagem").src = dados.imagem;
+  if (dados.habilidades) habilidades = dados.habilidades;
+  if (dados.rituais) rituais = dados.rituais;
 
-  if (dados.habilidades) {
-    habilidades = dados.habilidades;
-    renderHabilidades();
-  }
-
-  if (dados.rituais) {
-    rituais = dados.rituais;
-    renderRituais();
-  }
-
-  setTimeout(() => {
-    const aba = document.getElementById(dados.abaAtiva);
-    const btn = [...document.querySelectorAll(".menu-abas button")]
-      .find(b => b.getAttribute("onclick")?.includes(dados.abaAtiva));
-    if (aba && btn) abrirAba(dados.abaAtiva, btn);
-  }, 50);
-
-  setTimeout(() => {
-    dados.habilidadesAbertas?.forEach(nome => {
-      document.querySelectorAll(".habilidade").forEach(hab => {
-        const n = hab.querySelector(".hab-nome")?.innerText;
-        if (n === nome) {
-          const body = hab.querySelector(".hab-body");
-          if (body) body.style.display = "block";
-        }
-      });
+  if (dados.pericias && dados.pericias.length > 0) {
+    const linhas = document.querySelectorAll(".pericia-linha:not(.cabecalho)");
+    dados.pericias.forEach((p, i) => {
+      if (linhas[i]) {
+        const spans = linhas[i].querySelectorAll("span[contenteditable]");
+        if (spans[0]) spans[0].innerText = p.base;
+        if (spans[1]) spans[1].innerText = p.bonus;
+        atualizarPericia(linhas[i]);
+      }
     });
-  }, 100);
+  }
 
+  atualizarBarrasVida();
   atualizarDefesa();
   atualizarElemento();
-  atualizarBarrasVida();
+  renderHabilidades();
+  renderRituais();
 }
 
-/* ================= EXPORT/IMPORT ================= */
+/* ================= EXPORTAR/IMPORTAR ================= */
+
 function exportarFicha() {
-  const dados = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  const nome = dados?.textos?.nome || "RPG";
+  const dados = {
+    nome: document.getElementById("nome").innerText,
+    nivel: document.getElementById("nivel").innerText,
+    raca: document.getElementById("raca").innerText,
+    classe: document.getElementById("classe").innerText,
+    elemento: document.getElementById("elemento").value,
+    armadura: document.getElementById("armadura").value,
+    hpAtual: document.getElementById("hpAtual").innerText,
+    hpMax: document.getElementById("hpMax").innerText,
+    mpAtual: document.getElementById("mpAtual").innerText,
+    mpMax: document.getElementById("mpMax").innerText,
+    atributos: {
+      for: valorAttr("for"),
+      des: valorAttr("des"),
+      con: valorAttr("con"),
+      int: valorAttr("int"),
+      sab: valorAttr("sab"),
+      car: valorAttr("car")
+    },
+    habilidades,
+    rituais,
+    dataExport: new Date().toLocaleString("pt-BR")
+  };
+
   const json = JSON.stringify(dados, null, 2);
-  
-  const blob = new Blob([json], { type: 'application/json' });
+  const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `ficha-${nome}-${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `Ficha-${dados.nome}-${Date.now()}.json`;
+  link.click();
   URL.revokeObjectURL(url);
 }
 
 function importarFicha() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
   input.onchange = (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = (event) => {
       try {
-        const dados = JSON.parse(ev.target.result);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-        location.reload();
-      } catch {
-        alert('Arquivo inválido!');
+        const dados = JSON.parse(event.target.result);
+
+        document.getElementById("nome").innerText = dados.nome || "Herói";
+        document.getElementById("nivel").innerText = dados.nivel || "1";
+        document.getElementById("raca").innerText = dados.raca || "Humano";
+        document.getElementById("classe").innerText = dados.classe || "Guardião";
+        document.getElementById("elemento").value = dados.elemento || "";
+        document.getElementById("armadura").value = dados.armadura || "nenhuma";
+        document.getElementById("hpAtual").innerText = dados.hpAtual || "40";
+        document.getElementById("hpMax").innerText = dados.hpMax || "50";
+        document.getElementById("mpAtual").innerText = dados.mpAtual || "20";
+        document.getElementById("mpMax").innerText = dados.mpMax || "30";
+
+        if (dados.atributos) {
+          Object.entries(dados.atributos).forEach(([attr, valor]) => {
+            const el = document.querySelector(`#${attr} .valor`);
+            if (el) el.innerText = valor;
+          });
+        }
+
+        if (dados.habilidades) habilidades = dados.habilidades;
+        if (dados.rituais) rituais = dados.rituais;
+
+        atualizarBarrasVida();
+        atualizarDefesa();
+        atualizarElemento();
+        renderHabilidades();
+        renderRituais();
+        salvarFicha();
+
+        alert("✅ Ficha importada com sucesso!");
+      } catch (err) {
+        alert("❌ Erro ao importar: " + err.message);
       }
     };
     reader.readAsText(file);
@@ -1105,47 +1275,86 @@ function importarFicha() {
 }
 
 function resetarFicha() {
-  if (confirm('Tem certeza? Isso resetará tudo!')) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-}
+  if (!confirm("⚠️ Resetar a ficha? Esta ação não pode ser desfeita!")) return;
 
-/* ================= EVENTOS ===== */
-document.addEventListener("input", e => {
-  if (e.target.matches("[contenteditable], input, textarea, select"))
-    salvarFicha();
-});
+  document.getElementById("nome").innerText = "Herói";
+  document.getElementById("nivel").innerText = "1";
+  document.getElementById("raca").innerText = "Humano";
+  document.getElementById("classe").innerText = "Guardião";
+  document.getElementById("elemento").value = "";
+  document.getElementById("armadura").value = "nenhuma";
+  document.getElementById("hpAtual").innerText = "40";
+  document.getElementById("hpMax").innerText = "50";
+  document.getElementById("mpAtual").innerText = "20";
+  document.getElementById("mpMax").innerText = "30";
 
-document.addEventListener("change", salvarFicha);
+  document.querySelectorAll(".atributo .valor").forEach(el => {
+    el.innerText = "2";
+  });
 
-document.querySelectorAll(".atributo").forEach(a => {
-  a.addEventListener("input", atualizarDefesa);
-});
+  document.querySelectorAll(".pericia-linha:not(.cabecalho) span[contenteditable]").forEach(el => {
+    el.innerText = "0";
+  });
 
-if (armadura) armadura.addEventListener("change", atualizarDefesa);
+  habilidades = [
+    { nome: "Ataque Rápido", tipo: "Ativa", desc: "Realiza um ataque extra no combate." },
+    { nome: "Resistência Natural", tipo: "Passiva", desc: "Reduz dano recebido em 10%." },
+    { nome: "Ritual das Cinzas", tipo: "Ritual", desc: "Manipula cinzas e fogo para diversos fins." }
+  ];
+  rituais = [];
 
-if (modoMestre) {
-  modoMestre.onchange = () => {
-    painelMestre.style.display = modoMestre.checked ? "block" : "none";
-    renderHabilidades();
-  };
-}
+  document.getElementById("imgPersonagem").src = "https://via.placeholder.com/180x240?text=Personagem";
 
-if (buscaHab) buscaHab.oninput = renderHabilidades;
-if (filtroTipo) filtroTipo.onchange = renderHabilidades;
-if (ordemHab) ordemHab.onchange = renderHabilidades;
-
-document.getElementById("elemento").addEventListener("change", atualizarElemento);
-
-/* ================= INICIALIZAR ================= */
-window.addEventListener("load", () => {
-  popularElementos();
+  atualizarBarrasVida();
+  atualizarDefesa();
+  atualizarElemento();
   renderHabilidades();
   renderRituais();
+  localStorage.removeItem(STORAGE_KEY);
+
+  alert("🔄 Ficha resetada!");
+}
+
+/* ================= INICIALIZAÇÃO ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  popularElementos();
   carregarFicha();
+  renderHabilidades();
+  renderRituais();
+  atualizarDefesa();
   atualizarBarrasVida();
+  atualizarElemento();
+
+  // Listeners para pericias
+  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
+    linha.querySelectorAll("span[contenteditable]").forEach(span => {
+      span.addEventListener("blur", () => {
+        span.innerText = validarEntrada(span.innerText, 0, 100);
+        atualizarPericia(linha);
+      });
+    });
+  });
+
+  // Listeners para contenteditable
+  document.querySelectorAll("[contenteditable][id]").forEach(el => {
+    el.addEventListener("blur", () => {
+      if (el.id.includes("hp") || el.id.includes("mp")) {
+        el.innerText = validarEntrada(el.innerText, 0, 999);
+        atualizarBarrasVida();
+      }
+      if (el.id.includes("nivel")) {
+        el.innerText = validarEntrada(el.innerText, 1, 100);
+      }
+      salvarFicha();
+    });
+  });
+
+  // Listeners para selects
+  document.getElementById("elemento").addEventListener("change", atualizarElemento);
+  document.getElementById("armadura").addEventListener("change", atualizarDefesa);
 });
+
 </script>
 
 </body>
