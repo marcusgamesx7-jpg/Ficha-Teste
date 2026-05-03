@@ -556,14 +556,14 @@ h1, h2, h3 {
     <p><b>Classe:</b> <span contenteditable id="classe">Guardião</span></p>
 
     <p><b>Elemento:</b>
-      <select id="elemento"></select>
+      <select id="elemento" onchange="atualizarElemento()"></select>
     </p>
 
     <p><b>Relação Elemental:</b>
       <span id="infoElemento" style="color:#ffd700">—</span>
     </p>
     <p><b>Armadura:</b>
-      <select id="armadura">
+      <select id="armadura" onchange="atualizarDefesa()">
         <option value="nenhuma">Sem armadura</option>
         <option value="leve">Armadura Leve</option>
         <option value="media">Armadura Média</option>
@@ -691,13 +691,13 @@ h1, h2, h3 {
 
   <div id="painelMestre" style="display:none;margin-top:15px;background:#2a1f12;padding:15px;border-radius:8px;">
     <h3>Adicionar Habilidade</h3>
-    <input id="novaNome" placeholder="Nome da habilidade" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;">
-    <select id="novaTipo" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;">
+    <input id="novaNome" placeholder="Nome da habilidade" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;box-sizing:border-box;">
+    <select id="novaTipo" style="width:100%;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;box-sizing:border-box;">
       <option>Ativa</option>
       <option>Passiva</option>
       <option>Ritual</option>
     </select>
-    <textarea id="novaDesc" placeholder="Descrição" style="width:100%;height:60px;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;font-family:Cinzel,serif;"></textarea>
+    <textarea id="novaDesc" placeholder="Descrição" style="width:100%;height:60px;margin:5px 0;background:#1a140c;color:#f5e6b8;border:1px solid #6b4f1d;padding:8px;border-radius:4px;font-family:'Cinzel',serif;box-sizing:border-box;"></textarea>
     <button onclick="adicionarHabilidade()" style="width:100%;margin-top:10px;">➕ Adicionar</button>
   </div>
 
@@ -810,6 +810,29 @@ const relacoes = {
   "🧠 Mente": { forte: ["🌑 Trevas"], fraco: ["🔥 Fogo"] }
 };
 
+/* ================= INICIALIZAÇÃO ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  popularElementos();
+  renderHabilidades();
+  renderRituais();
+  atualizarBarrasVida();
+  atualizarDefesa();
+  carregarFicha();
+
+  // Listeners para perícias
+  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
+    linha.querySelectorAll("span[contenteditable]").forEach(span => {
+      span.addEventListener("input", () => atualizarPericia(linha));
+    });
+  });
+
+  // Listeners para campos editáveis
+  document.querySelectorAll("[contenteditable][id]").forEach(el => {
+    el.addEventListener("blur", salvarFicha);
+  });
+});
+
 /* ================= FUNÇÕES BÁSICAS ================= */
 
 function abrirAba(id, btn) {
@@ -856,7 +879,7 @@ function atualizarDefesa() {
 
 function editarAtributo(el) {
   const valor = el.querySelector(".valor");
-  const novoVal = prompt("Digite o novo valor:", valor.innerText);
+  const novoVal = prompt("Digite o novo valor (1-20):", valor.innerText);
   if (novoVal !== null) {
     const validado = validarEntrada(novoVal, 1, 20);
     valor.innerText = validado;
@@ -1001,39 +1024,50 @@ function renderHabilidades() {
     div.className = "habilidade";
 
     div.innerHTML = `
-      <div class="hab-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
-        <div>
-          <span class="hab-nome">${h.nome}</span><br>
-          <span class="hab-tipo">${h.tipo}</span>
-        </div>
-        <span style="font-size:20px;cursor:pointer;">▼</span>
+      <div class="hab-header">
+        <span class="hab-nome">${h.nome}</span>
+        <span class="hab-tipo">${h.tipo}</span>
       </div>
       <div class="hab-body">
         <p>${h.desc}</p>
-        <div class="mestre-tools" style="${document.getElementById("modoMestre").checked ? 'display:flex' : 'display:none'}">
+        <div class="mestre-tools">
           <button onclick="editarHab('${h.nome}')">✏️ Editar</button>
           <button onclick="removerHab('${h.nome}')">🗑️ Remover</button>
         </div>
       </div>
     `;
 
+    div.querySelector(".hab-header").onclick = () => {
+      const body = div.querySelector(".hab-body");
+      body.style.display = body.style.display === "block" ? "none" : "block";
+    };
+
+    if (document.getElementById("modoMestre").checked)
+      div.querySelector(".mestre-tools").style.display = "flex";
+
     listaDiv.appendChild(div);
   });
+}
+
+function toggleModoMestre() {
+  const painelMestre = document.getElementById("painelMestre");
+  painelMestre.style.display = document.getElementById("modoMestre").checked ? "block" : "none";
+  renderHabilidades();
 }
 
 function adicionarHabilidade() {
   const nome = document.getElementById("novaNome").value.trim();
   if (!nome) {
-    alert("Digite o nome da habilidade!");
+    alert("⚠️ Digite o nome da habilidade!");
     return;
   }
-  
+
   habilidades.push({
-    nome,
+    nome: nome,
     tipo: document.getElementById("novaTipo").value,
     desc: document.getElementById("novaDesc").value || "Sem descrição"
   });
-  
+
   document.getElementById("novaNome").value = "";
   document.getElementById("novaDesc").value = "";
   renderHabilidades();
@@ -1052,22 +1086,16 @@ function editarHab(nome) {
   const h = habilidades.find(h => h.nome === nome);
   if (!h) return;
 
-  const n = prompt("Nome:", h.nome);
+  const n = prompt("Novo nome:", h.nome);
   if (n === null) return;
-  
-  const d = prompt("Descrição:", h.desc);
+
+  const d = prompt("Nova descrição:", h.desc);
   if (d === null) return;
 
   h.nome = n;
   h.desc = d;
   renderHabilidades();
   salvarFicha();
-}
-
-function toggleModoMestre() {
-  document.getElementById("painelMestre").style.display = 
-    document.getElementById("modoMestre").checked ? "block" : "none";
-  renderHabilidades();
 }
 
 /* ================= RITUAIS ================= */
@@ -1077,16 +1105,16 @@ function renderRituais() {
   lista.innerHTML = "";
 
   if (rituais.length === 0) {
-    lista.innerHTML = "<p style='text-align:center;color:#999;'>Nenhum ritual adicionado</p>";
+    lista.innerHTML = "<p style='text-align:center;color:#999;'>Nenhum ritual criado</p>";
     return;
   }
 
   rituais.forEach((r, i) => {
     lista.innerHTML += `
       <details>
-        <summary>📿 ${r.nome}</summary>
-        <p>${r.desc}</p>
-        <button onclick="removerRitual(${i})" style="background:#c0392b;margin-top:10px;">❌ Remover</button>
+        <summary>${r.nome}</summary>
+        <p>${r.desc || "Sem descrição"}</p>
+        <button onclick="removerRitual(${i})" style="margin-top:10px;">❌ Remover</button>
       </details>
     `;
   });
@@ -1095,11 +1123,9 @@ function renderRituais() {
 function novoRitual() {
   const nome = prompt("Nome do ritual:");
   if (!nome) return;
-  
+
   const desc = prompt("Descrição do ritual:");
-  if (desc === null) return;
-  
-  rituais.push({ nome, desc });
+  rituais.push({ nome, desc: desc || "Sem descrição" });
   renderRituais();
   salvarFicha();
 }
@@ -1120,9 +1146,7 @@ function salvarFicha() {
     selects: {},
     imagem: document.getElementById("imgPersonagem").src,
     habilidades,
-    rituais,
-    abaAtiva: document.querySelector("section.ativa")?.id || "aba-ficha",
-    pericias: []
+    rituais
   };
 
   document.querySelectorAll("[contenteditable][id]").forEach(el => {
@@ -1131,17 +1155,6 @@ function salvarFicha() {
 
   document.querySelectorAll("select").forEach(sel => {
     dados.selects[sel.id] = sel.value;
-  });
-
-  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
-    const spans = linha.querySelectorAll("span[contenteditable]");
-    if (spans.length >= 2) {
-      dados.pericias.push({
-        nome: linha.querySelector(".nome").innerText,
-        base: spans[0].innerText,
-        bonus: spans[1].innerText
-      });
-    }
   });
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
@@ -1153,74 +1166,53 @@ function carregarFicha() {
 
   const dados = JSON.parse(saved);
 
-  Object.entries(dados.textos || {}).forEach(([id, valor]) => {
+  Object.keys(dados.textos).forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.innerText = valor;
+    if (el) el.innerText = dados.textos[id];
   });
 
-  Object.entries(dados.selects || {}).forEach(([id, valor]) => {
+  Object.keys(dados.selects).forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = valor;
+    if (el) el.value = dados.selects[id];
   });
 
-  if (dados.imagem) document.getElementById("imgPersonagem").src = dados.imagem;
+  if (dados.imagem) {
+    document.getElementById("imgPersonagem").src = dados.imagem;
+  }
+
   if (dados.habilidades) habilidades = dados.habilidades;
   if (dados.rituais) rituais = dados.rituais;
 
-  if (dados.pericias && dados.pericias.length > 0) {
-    const linhas = document.querySelectorAll(".pericia-linha:not(.cabecalho)");
-    dados.pericias.forEach((p, i) => {
-      if (linhas[i]) {
-        const spans = linhas[i].querySelectorAll("span[contenteditable]");
-        if (spans[0]) spans[0].innerText = p.base;
-        if (spans[1]) spans[1].innerText = p.bonus;
-        atualizarPericia(linhas[i]);
-      }
-    });
-  }
-
-  atualizarBarrasVida();
-  atualizarDefesa();
-  atualizarElemento();
   renderHabilidades();
   renderRituais();
+  atualizarBarrasVida();
+  atualizarDefesa();
 }
-
-/* ================= EXPORTAR/IMPORTAR ================= */
 
 function exportarFicha() {
   const dados = {
-    nome: document.getElementById("nome").innerText,
-    nivel: document.getElementById("nivel").innerText,
-    raca: document.getElementById("raca").innerText,
-    classe: document.getElementById("classe").innerText,
-    elemento: document.getElementById("elemento").value,
-    armadura: document.getElementById("armadura").value,
-    hpAtual: document.getElementById("hpAtual").innerText,
-    hpMax: document.getElementById("hpMax").innerText,
-    mpAtual: document.getElementById("mpAtual").innerText,
-    mpMax: document.getElementById("mpMax").innerText,
-    atributos: {
-      for: valorAttr("for"),
-      des: valorAttr("des"),
-      con: valorAttr("con"),
-      int: valorAttr("int"),
-      sab: valorAttr("sab"),
-      car: valorAttr("car")
-    },
+    textos: {},
+    selects: {},
+    imagem: document.getElementById("imgPersonagem").src,
     habilidades,
-    rituais,
-    dataExport: new Date().toLocaleString("pt-BR")
+    rituais
   };
+
+  document.querySelectorAll("[contenteditable][id]").forEach(el => {
+    dados.textos[el.id] = el.innerText;
+  });
+
+  document.querySelectorAll("select").forEach(sel => {
+    dados.selects[sel.id] = sel.value;
+  });
 
   const json = JSON.stringify(dados, null, 2);
   const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `Ficha-${dados.nome}-${Date.now()}.json`;
-  link.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "ficha-rpg.json";
+  a.click();
 }
 
 function importarFicha() {
@@ -1229,44 +1221,31 @@ function importarFicha() {
   input.accept = ".json";
   input.onchange = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = (ev) => {
       try {
-        const dados = JSON.parse(event.target.result);
-
-        document.getElementById("nome").innerText = dados.nome || "Herói";
-        document.getElementById("nivel").innerText = dados.nivel || "1";
-        document.getElementById("raca").innerText = dados.raca || "Humano";
-        document.getElementById("classe").innerText = dados.classe || "Guardião";
-        document.getElementById("elemento").value = dados.elemento || "";
-        document.getElementById("armadura").value = dados.armadura || "nenhuma";
-        document.getElementById("hpAtual").innerText = dados.hpAtual || "40";
-        document.getElementById("hpMax").innerText = dados.hpMax || "50";
-        document.getElementById("mpAtual").innerText = dados.mpAtual || "20";
-        document.getElementById("mpMax").innerText = dados.mpMax || "30";
-
-        if (dados.atributos) {
-          Object.entries(dados.atributos).forEach(([attr, valor]) => {
-            const el = document.querySelector(`#${attr} .valor`);
-            if (el) el.innerText = valor;
-          });
+        const dados = JSON.parse(ev.target.result);
+        Object.keys(dados.textos).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = dados.textos[id];
+        });
+        Object.keys(dados.selects).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = dados.selects[id];
+        });
+        if (dados.imagem) {
+          document.getElementById("imgPersonagem").src = dados.imagem;
         }
-
         if (dados.habilidades) habilidades = dados.habilidades;
         if (dados.rituais) rituais = dados.rituais;
-
-        atualizarBarrasVida();
-        atualizarDefesa();
-        atualizarElemento();
         renderHabilidades();
         renderRituais();
+        atualizarBarrasVida();
+        atualizarDefesa();
         salvarFicha();
-
         alert("✅ Ficha importada com sucesso!");
       } catch (err) {
-        alert("❌ Erro ao importar: " + err.message);
+        alert("❌ Erro ao importar ficha: " + err.message);
       }
     };
     reader.readAsText(file);
@@ -1275,85 +1254,11 @@ function importarFicha() {
 }
 
 function resetarFicha() {
-  if (!confirm("⚠️ Resetar a ficha? Esta ação não pode ser desfeita!")) return;
-
-  document.getElementById("nome").innerText = "Herói";
-  document.getElementById("nivel").innerText = "1";
-  document.getElementById("raca").innerText = "Humano";
-  document.getElementById("classe").innerText = "Guardião";
-  document.getElementById("elemento").value = "";
-  document.getElementById("armadura").value = "nenhuma";
-  document.getElementById("hpAtual").innerText = "40";
-  document.getElementById("hpMax").innerText = "50";
-  document.getElementById("mpAtual").innerText = "20";
-  document.getElementById("mpMax").innerText = "30";
-
-  document.querySelectorAll(".atributo .valor").forEach(el => {
-    el.innerText = "2";
-  });
-
-  document.querySelectorAll(".pericia-linha:not(.cabecalho) span[contenteditable]").forEach(el => {
-    el.innerText = "0";
-  });
-
-  habilidades = [
-    { nome: "Ataque Rápido", tipo: "Ativa", desc: "Realiza um ataque extra no combate." },
-    { nome: "Resistência Natural", tipo: "Passiva", desc: "Reduz dano recebido em 10%." },
-    { nome: "Ritual das Cinzas", tipo: "Ritual", desc: "Manipula cinzas e fogo para diversos fins." }
-  ];
-  rituais = [];
-
-  document.getElementById("imgPersonagem").src = "https://via.placeholder.com/180x240?text=Personagem";
-
-  atualizarBarrasVida();
-  atualizarDefesa();
-  atualizarElemento();
-  renderHabilidades();
-  renderRituais();
-  localStorage.removeItem(STORAGE_KEY);
-
-  alert("🔄 Ficha resetada!");
+  if (confirm("⚠️ Isso vai apagar TUDO! Tem certeza?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
 }
-
-/* ================= INICIALIZAÇÃO ================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-  popularElementos();
-  carregarFicha();
-  renderHabilidades();
-  renderRituais();
-  atualizarDefesa();
-  atualizarBarrasVida();
-  atualizarElemento();
-
-  // Listeners para pericias
-  document.querySelectorAll(".pericia-linha:not(.cabecalho)").forEach(linha => {
-    linha.querySelectorAll("span[contenteditable]").forEach(span => {
-      span.addEventListener("blur", () => {
-        span.innerText = validarEntrada(span.innerText, 0, 100);
-        atualizarPericia(linha);
-      });
-    });
-  });
-
-  // Listeners para contenteditable
-  document.querySelectorAll("[contenteditable][id]").forEach(el => {
-    el.addEventListener("blur", () => {
-      if (el.id.includes("hp") || el.id.includes("mp")) {
-        el.innerText = validarEntrada(el.innerText, 0, 999);
-        atualizarBarrasVida();
-      }
-      if (el.id.includes("nivel")) {
-        el.innerText = validarEntrada(el.innerText, 1, 100);
-      }
-      salvarFicha();
-    });
-  });
-
-  // Listeners para selects
-  document.getElementById("elemento").addEventListener("change", atualizarElemento);
-  document.getElementById("armadura").addEventListener("change", atualizarDefesa);
-});
 
 </script>
 
