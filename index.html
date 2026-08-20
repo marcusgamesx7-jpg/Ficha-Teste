@@ -334,6 +334,7 @@ section.ativa{
 .defesa-detalhes{
   display:flex;
   gap:40px;
+  flex-wrap:wrap;
 }
 
 .defesa-item{
@@ -514,13 +515,6 @@ section.ativa{
   padding:10px 16px;
 }
 
-.alerta-validacao {
-  color:#ffd700;
-  font-size:12px;
-  margin-top:5px;
-  display:none;
-}
-
 h1, h2, h3 {
   color:#ffd700;
   border-bottom:2px solid #6b4f1d;
@@ -630,7 +624,7 @@ h1, h2, h3 {
       <div class="escudo-info">
         <div class="titulo">DEFESA</div>
         <div class="valor" id="defesa">10</div>
-        <div class="formula">10 + AGI + Equip</div>
+        <div class="formula">10 + AGI + Armadura</div>
       </div>
     </div>
 
@@ -647,7 +641,7 @@ h1, h2, h3 {
   </div>
 
   <div class="alerta" id="alertaArmadura">
-    ⚠️ Esquiva reduzida por armadura pesada
+    ⚠️ Defesa reduzida por armadura pesada
   </div>
 </div>
 
@@ -773,10 +767,10 @@ const ATRIBUTOS = {
 };
 
 const ARMADURAS = {
-  nenhuma: { def: 0, bloq: 0, pen: 0 },
-  leve: { def: 2, bloq: 0, pen: 0 },
-  media: { def: 4, bloq: 1, pen: 1 },
-  pesada: { def: 6, bloq: 2, pen: 3 }
+  nenhuma: { def: 0 },
+  leve: { def: 2 },
+  media: { def: 4 },
+  pesada: { def: 6 }
 };
 
 const STORAGE_KEY = "fichaRPG_COMPLETA";
@@ -863,20 +857,36 @@ function valorAttr(id) {
   return el ? validarNumero(el.innerText) : 0;
 }
 
+function obterPericiaValor(nomePericias) {
+  const linha = Array.from(document.querySelectorAll(".pericia-linha:not(.cabecalho)"))
+    .find(el => el.querySelector(".nome").innerText === nomePericias);
+  if (!linha) return 0;
+  const spans = linha.querySelectorAll("span[contenteditable]");
+  const base = validarNumero(spans[0].innerText);
+  const bonus = validarNumero(spans[1].innerText);
+  return base + bonus;
+}
+
 /* ================= DEFESA ================= */
 
 function atualizarDefesa() {
   const agi = valorAttr("agi");
-  const forca = valorAttr("for");
   const arm = ARMADURAS[document.getElementById("armadura").value];
+  const reflexo = obterPericiaValor("Reflexo");
+  const resistencia = obterPericiaValor("Resistência (Fortitude)");
 
-  document.getElementById("defesa").innerText = 10 + agi + arm.def;
-  document.getElementById("bloqueio").innerText = forca + arm.bloq;
+  // Defesa = 10 + AGI + Armadura
+  const defesa = 10 + agi + arm.def;
+  document.getElementById("defesa").innerText = defesa;
 
-  const esqu = Math.max(agi - arm.pen, 0);
-  document.getElementById("esquiva").innerText = esqu;
+  // Bloqueio = Valor da perícia Resistência (Fortitude)
+  document.getElementById("bloqueio").innerText = resistencia;
 
-  document.getElementById("alertaArmadura").style.display = arm.pen > 0 ? "block" : "none";
+  // Esquiva = Defesa + Reflexo
+  const esquiva = defesa + reflexo;
+  document.getElementById("esquiva").innerText = esquiva;
+
+  document.getElementById("alertaArmadura").style.display = arm.def > 4 ? "block" : "none";
   salvarFicha();
 }
 
@@ -963,6 +973,7 @@ function atualizarPericia(linha) {
   const total = linha.querySelector(".total");
   
   if (total) total.innerText = base + bonus;
+  atualizarDefesa();
   salvarFicha();
 }
 
