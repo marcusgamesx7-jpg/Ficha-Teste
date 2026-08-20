@@ -614,7 +614,7 @@ h1, h2, h3 {
 
 <div class="atributos-wrap">
   <div class="atributo" id="for" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">FOR</div><div class="nome">Força</div></div>
-  <div class="atributo" id="des" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">DES</div><div class="nome">Destreza</div></div>
+  <div class="atributo" id="agi" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">AGI</div><div class="nome">Agilidade</div></div>
   <div class="atributo" id="con" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">CON</div><div class="nome">Constituição</div></div>
   <div class="atributo" id="int" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">INT</div><div class="nome">Inteligência</div></div>
   <div class="atributo" id="sab" onclick="editarAtributo(this)"><div class="valor">2</div><div class="sigla">SAB</div><div class="nome">Sabedoria</div></div>
@@ -630,7 +630,7 @@ h1, h2, h3 {
       <div class="escudo-info">
         <div class="titulo">DEFESA</div>
         <div class="valor" id="defesa">10</div>
-        <div class="formula">10 + DES + Equip</div>
+        <div class="formula">10 + AGI + Equip</div>
       </div>
     </div>
 
@@ -728,31 +728,32 @@ h1, h2, h3 {
     <span>Total</span>
   </div>
 
-  <div class="pericia-linha"><span class="nome">Acrobacia</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Acrobacia</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Arcanismo</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Arrombamento</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Arrombamento</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Atletismo</span><span>FOR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Atualidade</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Enganação</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Furtividade</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Iniciativa</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Furtividade</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Iniciativa</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Intimidação</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Intuição</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Investigação</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Luta</span><span>FOR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Manuseio de Animais</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Manuseio de Animais (Adestramento)</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Manuseio de Armas</span><span>FOR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Medicina</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Mestria de Elemento</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Montaria</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Montaria</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Percepção</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Persuasão</span><span>CAR</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Pontaria</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Prestidigitação</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
-  <div class="pericia-linha"><span class="nome">Reflexo</span><span>DES</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Pontaria</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Prestidigitação</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Reflexo</span><span>AGI</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Religião</span><span>INT</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Resistência (Fortitude)</span><span>CON</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
   <div class="pericia-linha"><span class="nome">Sobrevivência</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
+  <div class="pericia-linha"><span class="nome">Vontade</span><span>SAB</span><span contenteditable class="base">0</span><span contenteditable class="bonus">0</span><span class="total">0</span></div>
 </div>
 
 </section>
@@ -764,7 +765,7 @@ h1, h2, h3 {
 
 const ATRIBUTOS = {
   FOR: { nome: "Força", sigla: "FOR" },
-  DES: { nome: "Destreza", sigla: "DES" },
+  AGI: { nome: "Agilidade", sigla: "AGI" },
   CON: { nome: "Constituição", sigla: "CON" },
   INT: { nome: "Inteligência", sigla: "INT" },
   SAB: { nome: "Sabedoria", sigla: "SAB" },
@@ -865,14 +866,14 @@ function valorAttr(id) {
 /* ================= DEFESA ================= */
 
 function atualizarDefesa() {
-  const des = valorAttr("des");
+  const agi = valorAttr("agi");
   const forca = valorAttr("for");
   const arm = ARMADURAS[document.getElementById("armadura").value];
 
-  document.getElementById("defesa").innerText = 10 + des + arm.def;
+  document.getElementById("defesa").innerText = 10 + agi + arm.def;
   document.getElementById("bloqueio").innerText = forca + arm.bloq;
 
-  const esqu = Math.max(des - arm.pen, 0);
+  const esqu = Math.max(agi - arm.pen, 0);
   document.getElementById("esquiva").innerText = esqu;
 
   document.getElementById("alertaArmadura").style.display = arm.pen > 0 ? "block" : "none";
@@ -1132,7 +1133,7 @@ function salvarFicha() {
     mpMax: document.getElementById("mpMax").innerText,
     atributos: {
       for: document.querySelector("#for .valor").innerText,
-      des: document.querySelector("#des .valor").innerText,
+      agi: document.querySelector("#agi .valor").innerText,
       con: document.querySelector("#con .valor").innerText,
       int: document.querySelector("#int .valor").innerText,
       sab: document.querySelector("#sab .valor").innerText,
@@ -1171,7 +1172,7 @@ function carregarFicha() {
 
   if (dados.atributos) {
     document.querySelector("#for .valor").innerText = dados.atributos.for || "2";
-    document.querySelector("#des .valor").innerText = dados.atributos.des || "2";
+    document.querySelector("#agi .valor").innerText = dados.atributos.agi || "2";
     document.querySelector("#con .valor").innerText = dados.atributos.con || "2";
     document.querySelector("#int .valor").innerText = dados.atributos.int || "2";
     document.querySelector("#sab .valor").innerText = dados.atributos.sab || "2";
